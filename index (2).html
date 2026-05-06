@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Простой тест</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #111;
+      color: #eee;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #app {
+      width: 400px;
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #444;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #666;
+    }
+
+    .option {
+      display: block;
+      margin: 8px 0;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <button id="startBtn">Начать тест</button>
+  </div>
+
+  <script src="questions.js"></script>
+  <script>
+    let app = document.getElementById('app');
+    let startBtn = document.getElementById('startBtn');
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    startBtn.addEventListener('click', startQuiz);
+
+    function startQuiz() {
+      renderQuestion();
+    }
+
+    function renderQuestion() {
+      let q = questions[currentQuestion];
+      app.innerHTML = `
+        <h2>${q.question}</h2>
+        ${q.options
+          .map(
+            (opt, i) =>
+              `<label class="option"><input type="radio" name="answer" value="${i}"> ${opt}</label>`
+          )
+          .join('')}
+        <button id="nextBtn">Далее</button>
+      `;
+      document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+    }
+
+    function nextQuestion() {
+      let selected = document.querySelector('input[name="answer"]:checked');
+      if (!selected) return alert('Выберите ответ!');
+      if (parseInt(selected.value) === questions[currentQuestion].correct) {
+        score++;
+      }
+
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        renderQuestion();
+      } else {
+        showResult();
+      }
+    }
+
+    function showResult() {
+      app.innerHTML = `
+        <h2>Результат</h2>
+        <p>Вы ответили правильно на ${score} из ${questions.length}</p>
+        <button id="restartBtn">Пройти снова</button>
+      `;
+      document
+        .getElementById('restartBtn')
+        .addEventListener('click', () => {
+          currentQuestion = 0;
+          score = 0;
+          startQuiz();
+        });
+    }
+  </script>
+</body>
+</html>

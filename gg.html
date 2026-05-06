@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Проверка чекбоксов</title>
+</head>
+<body>
+<h2>Выберите чекбоксы:</h2>
+<input type="checkbox" class="myInput"> Чекбокс 1<br>
+<input type="checkbox" class="myInput"> Чекбокс 2<br>
+<input type="checkbox" class="myInput"> Чекбокс 3<br>
+<input type="checkbox" class="myInput"> Чекбокс 4<br>
+<button id="checkBtn">Проверить</button>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+const inputs = document.querySelectorAll(".myInput");
+const btn = document.getElementById("checkBtn");
+
+btn.addEventListener("click", () => {
+inputs.forEach((input, index) => {
+console.log(`Input ${index + 1}: ${input.checked ? "Выбран" : "Не выбран"}`);
+});
+});
+});
+</script>
+</body>
+</html>
